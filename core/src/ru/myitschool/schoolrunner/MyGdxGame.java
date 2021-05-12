@@ -223,7 +223,7 @@ public class MyGdxGame extends ApplicationAdapter {
 			if(timeLevelUp+timeLevelUpInterval< TimeUtils.millis()) {
 				timeLevelUp=TimeUtils.millis();
 				fon[0].dx -= 0.01f;
-				floor.get(0).dx -= 0.03f;
+				floor.get(0).dx -= 0.01f;
 			}
 
 			if(gameState==GAME_PLAY)
