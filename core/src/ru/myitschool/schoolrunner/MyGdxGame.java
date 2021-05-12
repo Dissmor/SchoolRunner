@@ -39,12 +39,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	Texture imgFon;
 	TextureRegion imgFloor[] = new TextureRegion[4];
-	TextureRegion imgMan[] = new TextureRegion[30];
-	Texture imgAtlasMan;
-	Texture imgAtlasFloor;
-	Texture imgSoundOn, imgSoundOff;
-	Texture imgMusicOn, imgMusicOff;
-	Texture imgGamePlay, imgGamePause;
+	TextureRegion imgMan[] = new TextureRegion[50];
+	Texture imgAtlas;
+	TextureRegion imgSoundOn, imgSoundOff;
+	TextureRegion imgMusicOn, imgMusicOff;
+	TextureRegion imgGamePlay, imgGamePause;
 
 	Fon fon[] = new Fon[2];
 	Array<Floor> floor = new Array<>();
@@ -53,13 +52,12 @@ public class MyGdxGame extends ApplicationAdapter {
 	int gameScore = 0; // Счёт
 	int gameRecord; // Рекорд
 
-	static int gameState=4; // 0 - игра     1 - смерть     2 - ожидаем перезапуск   3 - пауза     4 - ожидание старта  5 - вспм. (для перезапуска)
+	static int gameState=4; // 0 - игра     1 - смерть     2 - ожидаем перезапуск   3 - пауза     4 - ожидание старта
 	public static final int GAME_PLAY = 0;
 	public static final int GAME_OVER = 1;
 	public static final int WAIT_GAME_RESTART = 2;
 	public static final int GAME_PAUSE = 3;
 	public static final int WAIT_GAME_START = 4;
-	public static final int GAME_WAIT = 5;
 
 	boolean isPaused = false;
 	boolean isOver = false;
@@ -82,7 +80,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
 		parameter.size = 190;
-		parameter.color = new Color(0, 1, 0.145f, 0.46f); // RGBA
+		parameter.color = new Color(0, 1, 0.85f, 0.76f); // RGBA
 		font = generator.generateFont(parameter);
 
 		FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("19319.ttf"));
@@ -113,23 +111,23 @@ public class MyGdxGame extends ApplicationAdapter {
 		parameter5.color = new Color(0, 0.250f, 0.154f, 0.59f); // RGBA
 		font5 = generator5.generateFont(parameter5);
 
-		imgFon = new Texture("Wall.png"); // Сделать на wall.png
+		imgFon = new Texture("Wall.png");
 
-		imgAtlasFloor = new Texture("floorAtlas.png");
-		for(int i = 0; i<4; i++) imgFloor[i] = new TextureRegion(imgAtlasFloor,i*256,0,256,300);
-
-		imgAtlasMan = new Texture("manAtlas.png");
+		imgAtlas = new Texture("atlas.png");
+		for(int i = 0; i<4; i++) imgFloor[i] = new TextureRegion(imgAtlas,i*256,1500,256,300);
 		for(int i=0; i<10; i++) {
-			imgMan[i] = new TextureRegion(imgAtlasMan,i*300,0,300,300);
-			imgMan[i+10] = new TextureRegion(imgAtlasMan,i*300,300,300,300);
-			imgMan[i+20] = new TextureRegion(imgAtlasMan,i*300,600,300,300);
+			imgMan[i] = new TextureRegion(imgAtlas,i*300,0,300,300);
+			imgMan[i+10] = new TextureRegion(imgAtlas,i*300,300,300,300);
+			imgMan[i+20] = new TextureRegion(imgAtlas,i*300,600,300,300);
+			imgMan[i+30] = new TextureRegion(imgAtlas,i*300,900,300,300);
+			imgMan[i+40] = new TextureRegion(imgAtlas,i*300,1200,300,300);
 		}
-		imgMusicOn = new Texture("MusicOn.png");
-		imgMusicOff = new Texture("MusicOff.png");
-		imgSoundOn = new Texture("SoundOn.png");
-		imgSoundOff = new Texture("SoundOff.png");
-		imgGamePlay = new Texture("Play.png");
-		imgGamePause = new Texture("Stop.png");
+		imgSoundOn = new TextureRegion(imgAtlas,1024,1500,200,200);
+		imgSoundOff = new TextureRegion(imgAtlas,1224,1500,200,200);
+		imgMusicOn = new TextureRegion(imgAtlas,1424,1500,200,200);
+		imgMusicOff = new TextureRegion(imgAtlas,1624,1500,200,200);
+		imgGamePlay = new TextureRegion(imgAtlas,1824,1500,200,200);
+		imgGamePause = new TextureRegion(imgAtlas,2024,1500,200,200);
 
 
 		fon[0] = new Fon(0, 0);
@@ -185,7 +183,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				}
 			}
 		// События
-		if(!isSound||!isMusic) gameMusic.stop();
+		if(!isMusic) gameMusic.stop();
 		if(!isPaused && !isStart) {
 			if (gameState == GAME_OVER) {
 				man.isAlive = false;
@@ -246,9 +244,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		if(isStart) font.draw(batch, "Старт", 0, SCR_HEIGHT/2, SCR_WIDTH, Align.center, false);
 		if(isPaused) font2.draw(batch, "Пауза", 0, SCR_HEIGHT/2, SCR_WIDTH, Align.center, false);
 		if(isOver) font3.draw(batch, "Ты проиграл", 0, SCR_HEIGHT/2, SCR_WIDTH, Align.center, false);
-		font4.draw(batch, "Время: "+ gameScore, 0, SCR_HEIGHT, SCR_WIDTH, Align.topLeft, false);
+		font4.draw(batch, "Время: "+ gameScore, 6, SCR_HEIGHT-6, SCR_WIDTH, Align.topLeft, false);
 		if(gameScore >= gameRecord) gameRecord = gameScore;
-		font5.draw(batch, "Рекорд: "+ gameRecord, 0, SCR_HEIGHT-100, SCR_WIDTH, Align.topLeft, false);
+		font5.draw(batch, "Рекорд: "+ gameRecord, 6, SCR_HEIGHT-106, SCR_WIDTH, Align.topLeft, false);
 
 		if(isSound) batch.draw(imgSoundOn, SCR_WIDTH-56, SCR_HEIGHT-56, 50, 50);
 		else batch.draw(imgSoundOff, SCR_WIDTH-56, SCR_HEIGHT-56, 50, 50);
@@ -294,7 +292,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		imgFon.dispose();
-		imgAtlasMan.dispose();
-		imgAtlasFloor.dispose();
+		imgAtlas.dispose();
 	}
 }

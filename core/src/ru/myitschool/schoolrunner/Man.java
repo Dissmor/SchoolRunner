@@ -38,14 +38,20 @@ public class Man {
             }
             if (condition== FAIL_DESK){
                 if(phase<=20) phase=21;
-                if(++phase==30) phase=29;
-                y=100;
+                if(++phase==50) phase=49;
+                dy=-4;
+                dx=10;
+                if(y>=100) y+=dy;
+                if(x<=370) x+=dx;
                 MyGdxGame.gameState = MyGdxGame.GAME_OVER;
             }
             if (condition == FAIL_CHAIR){
                 if(phase<=20) phase=21;
-                if(++phase==30) phase=29;
-                y=100;
+                if(++phase==50) phase=49;
+                dy=-4;
+                dx=10;
+                if(y>=100) y+=dy;
+                if(x<=370) x+=dx;
                 MyGdxGame.gameState = MyGdxGame.GAME_OVER;
             }
         }
